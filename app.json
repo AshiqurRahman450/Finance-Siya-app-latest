@@ -1,0 +1,40 @@
+{
+  "expo": {
+    "name": "Finance Siya App",
+    "slug": "FinanceSiyaApp",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0B0F19"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icon.png",
+        "backgroundColor": "#0B0F19"
+      },
+      "edgeToEdgeEnabled": true,
+      "predictiveBackGestureEnabled": false,
+      "package": "com.financesiya.FinanceSiyaApp"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "a62b8465-cc5b-4c8a-aa57-df9daba4eb21"
+      }
+    },
+    "owner": "financesiya",
+    "plugins": [
+      "expo-font"
+    ]
+  }
+}
