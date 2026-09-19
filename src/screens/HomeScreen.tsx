@@ -1317,6 +1317,29 @@ export default function HomeScreen() {
           </TouchableOpacity>
         </View>
 
+        {/* Liabilities Row */}
+        <TouchableOpacity
+          onPress={() => navigation.navigate('LiabilitiesAccelerator' as never)}
+          activeOpacity={0.85}
+          style={tw`${cardBg} border ${cardBorder} rounded-3xl p-5 mb-4 flex-row items-center justify-between`}
+        >
+          <View>
+            <View style={tw`${inputBg} p-2 rounded-xl self-start mb-2`}>
+              <Ionicons name="card-outline" size={20} color="#EF4444" />
+            </View>
+            <Text style={tw`${textPrimary} text-xs font-bold tracking-widest mb-1 uppercase`}>Liabilities</Text>
+            <Text style={tw`text-[#EF4444] text-2xl font-bold`}>
+              {formatCurrency(debts.reduce((sum, d) => sum + parseNumberFromString(d.remaining), 0))}
+            </Text>
+          </View>
+          <View style={tw`items-end`}>
+            <Text style={tw`text-gray-500 text-xs mb-1`}>{debts.length} active →</Text>
+            <Text style={tw`text-[10px] bg-[#EF4444] text-white px-2 py-1 rounded-full overflow-hidden font-bold`}>
+              Payoff Accelerator
+            </Text>
+          </View>
+        </TouchableOpacity>
+
         {/* Action Buttons Row */}
         <View style={tw`${cardBg} border ${cardBorder} rounded-3xl p-6 flex-row justify-between mb-4`}>
           <ActionButton isDark={isDark} icon="add" label="Add" onPress={() => openModal()} />

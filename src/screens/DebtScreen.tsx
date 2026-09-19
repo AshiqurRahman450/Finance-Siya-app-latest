@@ -28,7 +28,7 @@ const DebtCard = ({ item, onEdit, onDelete, isDark }) => {
         </TouchableOpacity>
       </View>
       <Text style={tw`${tp} font-bold text-lg mb-1 pr-24`}>{item.title}</Text>
-      <Text style={tw`text-gray-500 text-sm mb-4`}>{item.category}</Text>
+      <Text style={tw`text-gray-500 text-sm mb-4`}>{item.category}{item.interest ? ` • ${item.interest}% APR` : ''}</Text>
       <View style={tw`flex-row justify-between flex-end items-baseline mb-4 mt-2`}>
         <View style={tw`flex-row items-baseline`}>
           <Text style={tw`${tp} font-bold text-2xl`}>{item.remaining}</Text>
@@ -108,7 +108,7 @@ export default function DebtScreen() {
   const [savingsModalVisible, setSavingsModalVisible] = useState(false);
   const [editingDebt, setEditingDebt] = useState(null);
   const [editingSavings, setEditingSavings] = useState(null);
-  const [debtForm, setDebtForm] = useState({ title: '', category: '', remaining: '', monthly: '', due: '', paid: '' });
+  const [debtForm, setDebtForm] = useState({ title: '', category: '', remaining: '', monthly: '', due: '', paid: '', interest: '' });
   const [savingsForm, setSavingsForm] = useState({ name: '', target: '', saved: '' });
 
   // ── Computed from real API data ──
@@ -131,7 +131,7 @@ export default function DebtScreen() {
 
   const openDebtModal = (debt = null) => {
     if (debt) { setEditingDebt(debt); setDebtForm(debt); }
-    else { setEditingDebt(null); setDebtForm({ title: '', category: '', remaining: '', monthly: '', due: '', paid: '' }); }
+    else { setEditingDebt(null); setDebtForm({ title: '', category: '', remaining: '', monthly: '', due: '', paid: '', interest: '' }); }
     setDebtModalVisible(true);
   };
   const saveDebt = async () => {
@@ -305,6 +305,8 @@ export default function DebtScreen() {
               <TextInput style={tw`${fieldBg} ${textPrimary} p-3.5 rounded-xl mb-4 border ${fieldBorder}`} placeholder="e.g. Education" placeholderTextColor="#64748B" value={debtForm.category} onChangeText={t => setDebtForm({...debtForm, category: t})} />
               <Text style={tw`text-gray-400 mb-1 text-sm font-semibold`}>Remaining Amount</Text>
               <TextInput style={tw`${fieldBg} ${textPrimary} p-3.5 rounded-xl mb-4 border ${fieldBorder}`} placeholder="$16,500" placeholderTextColor="#64748B" keyboardType="numeric" value={debtForm.remaining} onChangeText={t => setDebtForm({...debtForm, remaining: t})} />
+              <Text style={tw`text-gray-400 mb-1 text-sm font-semibold`}>Interest Rate (%)</Text>
+              <TextInput style={tw`${fieldBg} ${textPrimary} p-3.5 rounded-xl mb-4 border ${fieldBorder}`} placeholder="e.g. 5.5" placeholderTextColor="#64748B" keyboardType="numeric" value={debtForm.interest?.toString()} onChangeText={t => setDebtForm({...debtForm, interest: t})} />
               <Text style={tw`text-gray-400 mb-1 text-sm font-semibold`}>Monthly Payment</Text>
               <TextInput style={tw`${fieldBg} ${textPrimary} p-3.5 rounded-xl mb-4 border ${fieldBorder}`} placeholder="$450/mo" placeholderTextColor="#64748B" value={debtForm.monthly} onChangeText={t => setDebtForm({...debtForm, monthly: t})} />
               <Text style={tw`text-gray-400 mb-1 text-sm font-semibold`}>Due Date</Text>

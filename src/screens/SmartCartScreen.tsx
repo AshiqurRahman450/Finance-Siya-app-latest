@@ -61,6 +61,20 @@ export default function SmartCartScreen({ navigation }) {
   const [test2Passed, setTest2Passed] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Siya Consumption Translator State
+  const [transItem, setTransItem] = useState('Branded Sneakers / Dress');
+  const [transCost, setTransCost] = useState('2500');
+  const [transYears, setTransYears] = useState(17);
+  const [showTransResult, setShowTransResult] = useState(false);
+
+  const calculateTranslator = () => {
+    setShowTransResult(true);
+  };
+
+  const transCostNum = parseFloat(transCost) || 0;
+  const transFutureValue = transCostNum * Math.pow(1.12, transYears);
+  const transFreedomDays = Math.floor(transFutureValue / 1000); // Assume 1 day = 1000 INR
+
   const priceNum = parseFloat(evalPrice) || 0;
   const required2xBalance = priceNum * 2;
   const test3Passed = priceNum > 0 && availableBalance >= required2xBalance;
@@ -706,6 +720,99 @@ export default function SmartCartScreen({ navigation }) {
             </TouchableOpacity>
           </View>
         )}
+
+        {/* SIYA CONSUMPTION TRANSLATOR SECTION */}
+        <View style={tw`mt-8 mb-6`}>
+          <Text style={tw`${textPrimary} text-2xl font-extrabold text-center mb-3`}>The Siya Consumption Translator</Text>
+          <Text style={tw`text-gray-400 text-xs text-center px-4 mb-6`}>
+            Before spending on a toy, shoes, or dress—run it through Siya. See how much future career & world travel freedom it costs.
+          </Text>
+
+          <View style={tw`${cardBg} border ${cardBorder} rounded-3xl p-5 shadow-lg`}>
+            {/* Item Name */}
+            <Text style={tw`text-gray-400 text-[10px] font-bold tracking-widest uppercase mb-1.5`}>Item Name</Text>
+            <TextInput
+              style={tw`${inputBg} ${textPrimary} p-3.5 rounded-xl border ${inputBorder} mb-4 font-semibold`}
+              placeholder="e.g. Branded Sneakers"
+              placeholderTextColor="#64748B"
+              value={transItem}
+              onChangeText={setTransItem}
+            />
+
+            {/* Cost Today */}
+            <Text style={tw`text-gray-400 text-[10px] font-bold tracking-widest uppercase mb-1.5`}>Cost Today (₹)</Text>
+            <TextInput
+              style={tw`${inputBg} ${textPrimary} p-3.5 rounded-xl border ${inputBorder} mb-5 font-semibold`}
+              placeholder="2500"
+              placeholderTextColor="#64748B"
+              keyboardType="numeric"
+              value={transCost}
+              onChangeText={setTransCost}
+            />
+
+            {/* Years to compound stepper */}
+            <View style={tw`flex-row items-center justify-between mb-6`}>
+              <View>
+                <Text style={tw`text-gray-400 text-[10px] font-bold tracking-widest uppercase mb-1`}>Years to Compound</Text>
+                <Text style={tw`text-gray-500 text-[9px]`}>e.g. Age 5 to 22</Text>
+              </View>
+              <View style={tw`flex-row items-center gap-4`}>
+                <TouchableOpacity onPress={() => setTransYears(Math.max(1, transYears - 1))} style={tw`w-8 h-8 rounded-full ${inputBg} border ${inputBorder} items-center justify-center`}>
+                  <Feather name="minus" size={14} color="#3B82F6" />
+                </TouchableOpacity>
+                <View style={tw`items-center`}>
+                  <Text style={tw`${textPrimary} font-bold text-lg`}>{transYears}</Text>
+                  <Text style={tw`text-gray-400 text-[10px]`}>yrs</Text>
+                </View>
+                <TouchableOpacity onPress={() => setTransYears(Math.min(50, transYears + 1))} style={tw`w-8 h-8 rounded-full ${inputBg} border ${inputBorder} items-center justify-center`}>
+                  <Feather name="plus" size={14} color="#3B82F6" />
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            {/* Ask Siya Button */}
+            <TouchableOpacity onPress={calculateTranslator} style={tw`bg-[#3B82F6] rounded-xl py-3.5 items-center flex-row justify-center shadow-lg mb-6`}>
+              <Ionicons name="sparkles" size={16} color="#FFFFFF" />
+              <Text style={tw`text-white font-bold text-sm ml-2`}>Ask Siya for Translation</Text>
+            </TouchableOpacity>
+
+            {/* Result Section */}
+            {showTransResult && (
+              <View style={tw`${inputBg} rounded-2xl p-4 border border-blue-900/30`}>
+                <View style={tw`flex-row justify-between items-center mb-4`}>
+                  <View style={tw`flex-row items-center`}>
+                    <Ionicons name="eye" size={14} color="#3B82F6" />
+                    <Text style={tw`text-[#3B82F6] text-[10px] font-bold tracking-widest ml-1.5`}>SIYA'S FUTURE PERCEPTION</Text>
+                  </View>
+                  {/* <View style={tw`bg-emerald-950/40 border border-emerald-900 px-2 py-0.5 rounded`}>
+                    <Text style={tw`text-emerald-400 text-[9px] font-bold`}>Opportunity Analysis</Text>
+                  </View> */}
+                </View>
+
+                <Text style={tw`text-gray-300 text-xs italic leading-5 mb-5`}>
+                  Siya: "That {transItem || 'item'} costs {formatCurrency(transCostNum)} today. If redirected into your Freedom Fund over {transYears} years, it becomes {formatCurrency(transFutureValue)}—buying {transFreedomDays} full days of total independence at age 22!"
+                </Text>
+
+                <View style={tw`flex-row gap-3 mb-4`}>
+                  <View style={tw`${isDark ? 'bg-[#0B0F19]' : 'bg-white'} border ${cardBorder} flex-1 rounded-xl p-3`}>
+                    <Text style={tw`text-gray-500 text-[9px] font-bold tracking-widest uppercase mb-1`}>Future Value</Text>
+                    <Text style={tw`text-gray-500 text-[9px] font-bold tracking-widest uppercase mb-2`}>@ Age 22</Text>
+                    <Text style={tw`text-emerald-400 font-extrabold text-lg`}>{formatCurrency(transFutureValue)}</Text>
+                  </View>
+                  <View style={tw`${isDark ? 'bg-[#0B0F19]' : 'bg-white'} border ${cardBorder} flex-1 rounded-xl p-3`}>
+                    <Text style={tw`text-gray-500 text-[9px] font-bold tracking-widest uppercase mb-1`}>Freedom</Text>
+                    <Text style={tw`text-gray-500 text-[9px] font-bold tracking-widest uppercase mb-2`}>Days Earned</Text>
+                    <Text style={tw`text-[#3B82F6] font-extrabold text-lg`}>{transFreedomDays} Days</Text>
+                  </View>
+                </View>
+
+                <Text style={tw`text-gray-500 text-[8px] leading-3`}>
+                  *Calculated at 12% compounding returns over {transYears} years. Allows child to pay for rent/food without a boss at age 22.
+                </Text>
+              </View>
+            )}
+          </View>
+        </View>
 
       </ScrollView>
 

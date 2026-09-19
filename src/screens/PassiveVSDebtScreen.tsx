@@ -219,7 +219,7 @@ export default function PassiveVSDebtScreen() {
         <View style={tw`flex-row justify-between mb-5`}>
           
           {/* Left Column: Passive (Time Freedom) */}
-          <View style={tw`${cardBg} border ${cardBorder} rounded-3xl p-4 w-[48.5%] justify-between`}>
+          <View style={tw`${cardBg} border ${cardBorder} rounded-3xl p-4 w-full justify-between`}>
             <View>
               <View style={tw`flex-row items-center mb-3`}>
                 <View style={tw`w-8 h-8 rounded-lg bg-[#3B82F6]/20 items-center justify-center mr-2`}>
@@ -254,135 +254,6 @@ export default function PassiveVSDebtScreen() {
             </View>
           </View>
 
-          {/* Right Column: Debt (Reduce Slavery) */}
-          <View style={tw`${cardBg} border ${cardBorder} rounded-3xl p-4 w-[48.5%] justify-between`}>
-            <View>
-              <View style={tw`flex-row items-center mb-3`}>
-                <View style={tw`w-8 h-8 rounded-lg bg-[#EF4444]/20 items-center justify-center mr-2`}>
-                  <Ionicons name="shield-outline" size={16} color="#EF4444" />
-                </View>
-                <Text style={tw`${textPrimary} font-bold text-sm`}>Reduce Slavery</Text>
-              </View>
-
-              <Text style={tw`text-[10px] text-gray-500 uppercase font-bold mb-1`}>Total Debt Burden</Text>
-              <Text style={tw`text-[#EF4444] font-bold text-lg mb-4`}>
-                {formatCurrency(totalDebt)}
-              </Text>
-
-              <Text style={tw`text-[10px] text-gray-500 uppercase font-bold mb-1`}>Slavery Days (Income)</Text>
-              <Text style={tw`text-[#EF4444] font-bold text-sm mb-4`}>
-                {slaveryDaysFromIncome} days of work
-              </Text>
-
-              {totalDebt > 0 ? (
-                <Text style={tw`text-gray-500 text-[10px] leading-3 mb-4`}>
-                  It takes <Text style={tw`font-bold ${textPrimary}`}>{slaveryDaysFromIncome} days</Text> of your monthly income (₹{userMonthlyIncome.toLocaleString()}/mo) to pay off this debt. Under min payments of {formatCurrency(totalMonthlyDebtPayment)}/mo, you are bound for {minimumPayoffMonths.toFixed(1)} months.
-                </Text>
-              ) : (
-                <Text style={tw`text-green-500 text-[10px] font-bold mb-4`}>
-                  No debt slavery! 100% sovereign status.
-                </Text>
-              )}
-            </View>
-
-            <View style={tw`pt-3 border-t border-dashed ${isDark ? 'border-gray-800' : 'border-gray-200'}`}>
-              <Text style={tw`text-gray-500 text-[10px] uppercase font-bold mb-0.5`}>Slavery Days Saved</Text>
-              <Text style={tw`text-[#EF4444] font-bold text-base`}>
-                -{selectedStrategy === 'paydown' ? directPaydownSlaveryDaysSaved : hybridSlaveryDaysSaved} days
-              </Text>
-              <Text style={tw`text-[9px] text-gray-500`}>
-                Using {selectedStrategy === 'paydown' ? 'Direct Paydown' : 'Siya Hybrid Path'}
-              </Text>
-            </View>
-          </View>
-
-        </View>
-
-        {/* Strategy Comparison Simulator */}
-        <View style={tw`${cardBg} border ${cardBorder} rounded-3xl p-5 mb-5`}>
-          <Text style={tw`${textPrimary} text-sm font-bold uppercase tracking-wider mb-4`}>
-            2. Choose & Simulate Payoff Strategy
-          </Text>
-
-          {/* Strategy Selectors */}
-          <View style={tw`flex-col gap-2.5`}>
-            
-            {/* Strategy 3: Hybrid (Recommended) */}
-            <TouchableOpacity
-              onPress={() => setSelectedStrategy('hybrid')}
-              style={tw`border-2 rounded-2xl p-3.5 ${selectedStrategy === 'hybrid' ? 'border-[#10B981] bg-[#10B981]/5' : (isDark ? 'border-gray-800 bg-[#0B0E14]' : 'border-gray-200 bg-gray-50')}`}
-            >
-              <View style={tw`flex-row justify-between items-center mb-1`}>
-                <View style={tw`flex-row items-center`}>
-                  <Ionicons name="sparkles" size={16} color="#10B981" style={tw`mr-2`} />
-                  <Text style={tw`font-bold text-sm ${selectedStrategy === 'hybrid' ? 'text-[#10B981]' : textPrimary}`}>
-                    Siya Hybrid Sovereignty Path
-                  </Text>
-                </View>
-                <View style={tw`px-2 py-0.5 bg-[#10B981]/20 rounded-full`}>
-                  <Text style={tw`text-[#10B981] text-[9px] font-bold uppercase`}>Rec</Text>
-                </View>
-              </View>
-              <Text style={tw`text-[11px] ${textSecondary} mb-3`}>
-                Invest the savings to generate passive returns. Channel that passive return to accelerate monthly debt payoffs. Keep the assets!
-              </Text>
-              {totalDebt > 0 && (
-                <View style={tw`flex-row justify-between items-center`}>
-                  <Text style={tw`text-[11px] text-gray-500`}>Payoff Time: <Text style={tw`font-bold ${textPrimary}`}>{hybridPayoffMonths.toFixed(1)} mos</Text></Text>
-                  <Text style={tw`text-[11px] text-[#10B981] font-bold`}>Saves {hybridSlaveryDaysSaved} days</Text>
-                </View>
-              )}
-            </TouchableOpacity>
-
-            {/* Strategy 2: Direct Paydown */}
-            <TouchableOpacity
-              onPress={() => setSelectedStrategy('paydown')}
-              style={tw`border-2 rounded-2xl p-3.5 ${selectedStrategy === 'paydown' ? 'border-[#3B82F6] bg-[#3B82F6]/5' : (isDark ? 'border-gray-800 bg-[#0B0E14]' : 'border-gray-200 bg-gray-50')}`}
-            >
-              <View style={tw`flex-row justify-between items-center mb-1`}>
-                <View style={tw`flex-row items-center`}>
-                  <Feather name="trash-2" size={15} color="#3B82F6" style={tw`mr-2`} />
-                  <Text style={tw`font-bold text-sm ${selectedStrategy === 'paydown' ? 'text-[#3B82F6]' : textPrimary}`}>
-                    Pure Debt Paydown
-                  </Text>
-                </View>
-              </View>
-              <Text style={tw`text-[11px] ${textSecondary} mb-3`}>
-                Inject savings directly into debt principal to clear it as fast as possible. (Asset column remains empty initially).
-              </Text>
-              {totalDebt > 0 && (
-                <View style={tw`flex-row justify-between items-center`}>
-                  <Text style={tw`text-[11px] text-gray-500`}>Payoff Time: <Text style={tw`font-bold ${textPrimary}`}>{directPaydownPayoffMonths.toFixed(1)} mos</Text></Text>
-                  <Text style={tw`text-[11px] text-[#3B82F6] font-bold`}>Saves {directPaydownSlaveryDaysSaved} days</Text>
-                </View>
-              )}
-            </TouchableOpacity>
-
-            {/* Strategy 1: Pure Passive */}
-            <TouchableOpacity
-              onPress={() => setSelectedStrategy('passive')}
-              style={tw`border-2 rounded-2xl p-3.5 ${selectedStrategy === 'passive' ? 'border-gray-500 bg-gray-500/5' : (isDark ? 'border-gray-800 bg-[#0B0E14]' : 'border-gray-200 bg-gray-50')}`}
-            >
-              <View style={tw`flex-row justify-between items-center mb-1`}>
-                <View style={tw`flex-row items-center`}>
-                  <Feather name="clock" size={15} color="#9CA3AF" style={tw`mr-2`} />
-                  <Text style={tw`font-bold text-sm ${selectedStrategy === 'passive' ? 'text-gray-400' : textPrimary}`}>
-                    Pure Passive Growth
-                  </Text>
-                </View>
-              </View>
-              <Text style={tw`text-[11px] ${textSecondary} mb-3`}>
-                Keep savings fully invested and pay only minimum monthly payments on debts. Maximizes investment cashflow.
-              </Text>
-              {totalDebt > 0 && (
-                <View style={tw`flex-row justify-between items-center`}>
-                  <Text style={tw`text-[11px] text-gray-500`}>Payoff Time: <Text style={tw`font-bold ${textPrimary}`}>{minimumPayoffMonths.toFixed(1)} mos</Text></Text>
-                  <Text style={tw`text-[11px] text-gray-400 font-bold`}>Saves 0 days</Text>
-                </View>
-              )}
-            </TouchableOpacity>
-
-          </View>
         </View>
 
         {/* SIYA AI SECTION */}

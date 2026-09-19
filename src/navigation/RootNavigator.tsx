@@ -13,6 +13,7 @@ import PassiveVSDebtScreen from '../screens/PassiveVSDebtScreen';
 import IncomeSourceScreen from '../screens/IncomeSourceScreen';
 import SurvivalScreen from '../screens/SurvivalScreen';
 import EditProfileScreen from '../screens/EditProfileScreen';
+import LiabilitiesAcceleratorScreen from '../screens/LiabilitiesAcceleratorScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -32,6 +33,7 @@ export default function RootNavigator() {
         <Stack.Screen name="IncomeSource" component={IncomeSourceScreen} />
         <Stack.Screen name="Survival" component={SurvivalScreen} />
         <Stack.Screen name="EditProfile" component={EditProfileScreen} />
+        <Stack.Screen name="LiabilitiesAccelerator" component={LiabilitiesAcceleratorScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
