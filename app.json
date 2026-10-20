@@ -34,7 +34,8 @@
     },
     "owner": "financesiya",
     "plugins": [
-      "expo-font"
+      "expo-font",
+      "expo-notifications"
     ]
   }
 }

@@ -181,23 +181,18 @@ export const getSiyaSavingsVsDebtRecommendation = async (savingsAmount: number, 
     const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
     
     const systemInstruction = `You are Siya, the Sovereignty Guardian.
-Your mission is to guide the user in choosing how to allocate their savings between building passive income (Time Freedom) and paying down debts (Reducing Slavery).
-The user has savings of ${savingsAmount} and the following debts:
+Your mission is to guide the user on allocating savings (${savingsAmount}) against their debts:
 ${debtDetails}
 
-You must evaluate:
-1. Passive Income Generation: How they can invest their savings to generate passive income.
-2. Debt Clearance: How paying down these specific debts reduces their "Slavery Days" (interest and debt burden).
-3. The hybrid path: Investing savings to generate passive income, and routing that passive income to pay off the debt.
+Provide a short, sweet, and punchy recommendation.
+CRITICAL RULES:
+- Keep the entire response to a MAXIMUM of 5 short lines.
+- Be extremely concise but highly encouraging and sharp.
+- Give a quick verdict on how much to invest vs. pay down debt.
 
-Provide a highly customized, encouraging, and sharp financial response. Use bold points, short paragraphs, and high-energy tone. Include:
-- A clear recommendation on the ratio of savings to invest vs. pay down debt.
-- Step-by-step action items for the "Passive Income" strategy.
-- Step-by-step action items for the "Debt Clearance" strategy.
-- Keep the response clean and format as valid markdown.
 Return a JSON object in the following format:
 {
-  "recommendation": "Markdown formatted string containing your detailed response, recommendations, action steps, and analysis."
+  "recommendation": "Short 5-line markdown string with your punchy advice."
 }
 Return JSON only. Do not include markdown wraps around the JSON itself.`;
 
@@ -225,32 +220,15 @@ Return JSON only. Do not include markdown wraps around the JSON itself.`;
 const mockSavingsVsDebtRec = (savingsAmount: number, debts: any[]): { recommendation: string } => {
   const totalDebt = debts.reduce((sum, d) => sum + (parseFloat(d.remaining?.toString().replace(/[^0-9.-]+/g,"")) || 0), 0);
   
-  let recText = `### 🌟 Siya's Sovereignty Plan\n\n`;
-  
   if (totalDebt === 0) {
-    recText += `**Congratulations! You are currently free from debt slavery!**\n\nSince you have no active debts, **100% of your savings (${savingsAmount.toLocaleString()})** should be funneled into building **Passive Income (Time Freedom)**.\n\n`;
-    recText += `#### 📈 Action Items for Time Freedom:\n`;
-    recText += `1. **Emergency Shield**: Set aside 3-6 months of expenses in a High Yield Savings Account (yielding ~5% return).\n`;
-    recText += `2. **Index Fund Core**: Put 60% of the remaining savings into low-cost Broad Market Index Funds (targeting 8-10% CAGR).\n`;
-    recText += `3. **Sovereignty Assets**: Look into high-yield dividend stocks or sovereign bonds for cashflow generation.`;
-  } else {
-    recText += `You have **${debts.length} active debts** totaling **${totalDebt.toLocaleString()}**, against **${savingsAmount.toLocaleString()}** in savings.\n\n`;
-    
-    if (savingsAmount > totalDebt) {
-      recText += `**Sovereignty Alert:** Your savings exceed your total debt! You have the power to buy back your freedom immediately.\n\n`;
-      recText += `#### 🛡️ Siya's Recommended Strategy:\n`;
-      recText += `- **Kill the Slavery (Debt)**: Allocate **${totalDebt.toLocaleString()}** to wipe out all debts immediately. This decreases your debt slavery days to **0** and terminates interest bleed.\n`;
-      recText += `- **Time Freedom (Passive)**: Put the remaining **${(savingsAmount - totalDebt).toLocaleString()}** into high-yield passive assets to start generating recurring cash flow.`;
-    } else {
-      recText += `#### 🛡️ Siya's Hybrid Strategy (Sovereignty Boost):\n`;
-      recText += `Instead of draining all your cash, we will execute a **hybrid asset-velocity strategy**:\n\n`;
-      recText += `1. **Leverage the Passive Side**: Invest **50% of savings (${(savingsAmount * 0.5).toLocaleString()})** into income-producing assets (e.g. index funds or dividend shares yielding ~8-10%). This grows your asset column.\n`;
-      recText += `2. **Sovereignty Debt Boost**: Take the passive income generated, add it to your monthly debt payment, and target the debt with the highest interest rate (Avalanche Method). This speeds up your debt-free date and saves you valuable days of slavery!\n`;
-      recText += `3. **Cash Reserve**: Keep **50% (${(savingsAmount * 0.5).toLocaleString()})** as a liquid buffer so you never have to take on high-interest debt again in an emergency.`;
-    }
+    return { recommendation: `**You are free from debt slavery!**\nFunnel 100% of your ${savingsAmount.toLocaleString()} savings into Passive Income.\nKeep 3 months of cash in a HYSA.\nInvest the rest into low-cost Broad Market Index Funds.\nLet your money buy back your time!` };
   }
   
-  return { recommendation: recText };
+  if (savingsAmount > totalDebt) {
+    return { recommendation: `**Sovereignty Alert: You can buy back your freedom!**\nWipe out your ${totalDebt.toLocaleString()} debt immediately to stop the interest bleed.\nTake the remaining ${(savingsAmount - totalDebt).toLocaleString()} and invest in high-yield passive assets.\nZero debt means zero slavery.` };
+  }
+
+  return { recommendation: `**Hybrid Sovereignty Strategy!**\nInvest 50% (${(savingsAmount * 0.5).toLocaleString()}) in income-producing assets (~8-10% yield).\nKeep 50% as a liquid emergency shield.\nUse the passive income generated to aggressively attack your highest interest debt!` };
 };
 
 const fallbackSavingsVsDebtRec = (savingsAmount: number, debts: any[]): string => {

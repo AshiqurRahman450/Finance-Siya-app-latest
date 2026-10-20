@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Modal, TextInput, Alert, KeyboardAvoidingView, Platform } from 'react-native';
 import tw from 'twrnc';
 import { Feather, Ionicons } from '@expo/vector-icons';
@@ -110,6 +110,22 @@ export default function DebtScreen() {
   const [editingSavings, setEditingSavings] = useState(null);
   const [debtForm, setDebtForm] = useState({ title: '', category: '', remaining: '', monthly: '', due: '', paid: '', interest: '' });
   const [savingsForm, setSavingsForm] = useState({ name: '', target: '', saved: '' });
+
+  // Auto-calculate interest rate when remaining, monthly, and paid are filled
+  useEffect(() => {
+    if (!debtForm.remaining || !debtForm.monthly || !debtForm.paid) return;
+    
+    const r = parseFloat(debtForm.remaining.toString().replace(/[^0-9.-]+/g, ''));
+    const m = parseFloat(debtForm.monthly.toString().replace(/[^0-9.-]+/g, ''));
+    const p = parseFloat(debtForm.paid.toString().replace(/[^0-9.-]+/g, ''));
+    
+    if (!isNaN(r) && !isNaN(m) && !isNaN(p) && p !== 0) {
+      const calculatedInterest = Math.round((r * m) / p).toString();
+      if (debtForm.interest !== calculatedInterest) {
+        setDebtForm(prev => ({ ...prev, interest: calculatedInterest }));
+      }
+    }
+  }, [debtForm.remaining, debtForm.monthly, debtForm.paid]);
 
   // ── Computed from real API data ──
   const totalDebtRemaining = debts.reduce((sum, item) => sum + parseFloat(item.remaining?.toString().replace(/[^0-9.-]+/g,"") || '0'), 0);

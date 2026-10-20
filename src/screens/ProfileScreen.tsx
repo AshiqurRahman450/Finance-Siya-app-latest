@@ -6,6 +6,8 @@ import { ScreenWrapper } from '../components/ScreenWrapper';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '../theme/ThemeContext';
 import { useAuth } from '../context/AuthContext';
+import { triggerAdPopUpNotification } from '../services/NotificationService';
+import { useAdModal } from '../context/AdModalContext';
 
 
 const MenuItem = ({ icon, title, subtitle, iconColor, iconBgColor, isLast = false, onPress, isDark }: any) => (
@@ -30,6 +32,7 @@ export default function ProfileScreen() {
   const navigation = useNavigation();
   const { isDark, formatCurrency } = useTheme() as any;
   const { user, logout, transactions, debts } = useAuth() as any;
+  const { showAdModal } = useAdModal();
 
   // ── Compute wallet figures from real transaction data ──
   const totalIncome = useMemo(
@@ -147,7 +150,39 @@ export default function ProfileScreen() {
               onPress={() => navigation.navigate('SmartCart' as never)}
             />
             <MenuItem isDark={isDark} icon="card-outline" title="Debt Overview" subtitle={formatCurrency(totalDebt)} iconColor="#EF4444" iconBgColor={isDark ? '#4C1D2E' : '#FEE2E2'} />
-            <MenuItem isDark={isDark} icon="notifications-outline" title="Notifications" iconColor="#3B82F6" iconBgColor={isDark ? '#172554' : '#DBEAFE'} />
+            <MenuItem
+              isDark={isDark}
+              icon="notifications-outline"
+              title="Notifications & Offers"
+              subtitle="Centered ad modal & outside pop-up"
+              iconColor="#3B82F6"
+              iconBgColor={isDark ? '#172554' : '#DBEAFE'}
+              onPress={() => {
+                Alert.alert(
+                  "Advertisement Pop-up 📢",
+                  "Test the advertisement pop-ups with photos:\n\n1. Centered Pop-up: Opens the centered advertisement modal with photos and deals.\n2. Outside-App Pop-up: Triggers a high-priority heads-up banner with photo outside the app in 4 seconds.",
+                  [
+                    {
+                      text: "🖼️ Centered Modal",
+                      onPress: () => {
+                        showAdModal();
+                      }
+                    },
+                    {
+                      text: "🚀 Outside Pop-up (4s)",
+                      onPress: async () => {
+                        await triggerAdPopUpNotification(4);
+                        Alert.alert(
+                          "Pop-up Scheduled! ⏳",
+                          "Press your phone's Home button NOW to see the advertisement notification pop up outside the app!"
+                        );
+                      }
+                    },
+                    { text: "Cancel", style: "cancel" },
+                  ]
+                );
+              }}
+            />
             <MenuItem
               isDark={isDark}
               icon="settings-outline"

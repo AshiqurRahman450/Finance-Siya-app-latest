@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, createNavigationContainerRef } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MainTabNavigator from './MainTabNavigator';
 import LoginScreen from '../screens/LoginScreen';
@@ -15,11 +15,13 @@ import SurvivalScreen from '../screens/SurvivalScreen';
 import EditProfileScreen from '../screens/EditProfileScreen';
 import LiabilitiesAcceleratorScreen from '../screens/LiabilitiesAcceleratorScreen';
 
+export const navigationRef = createNavigationContainerRef();
+
 const Stack = createNativeStackNavigator();
 
 export default function RootNavigator() {
   return (
-    <NavigationContainer>
+    <NavigationContainer ref={navigationRef}>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="SignUp" component={SignUpScreen} />

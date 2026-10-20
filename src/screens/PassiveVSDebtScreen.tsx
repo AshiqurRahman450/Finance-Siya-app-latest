@@ -218,39 +218,48 @@ export default function PassiveVSDebtScreen() {
         {/* SPLIT PAGE SECTION: Side-by-Side Comparison */}
         <View style={tw`flex-row justify-between mb-5`}>
           
-          {/* Left Column: Passive (Time Freedom) */}
-          <View style={tw`${cardBg} border ${cardBorder} rounded-3xl p-4 w-full justify-between`}>
-            <View>
-              <View style={tw`flex-row items-center mb-3`}>
-                <View style={tw`w-8 h-8 rounded-lg bg-[#3B82F6]/20 items-center justify-center mr-2`}>
-                  <Feather name="trending-up" size={16} color="#3B82F6" />
-                </View>
-                <Text style={tw`${textPrimary} font-bold text-sm`}>Time Freedom</Text>
+          {/* Centralized & Enlarged: Passive (Time Freedom) */}
+          <View style={tw`${cardBg} border ${cardBorder} rounded-3xl p-8 w-full items-center shadow-lg`}>
+            
+            {/* Header */}
+            <View style={tw`items-center mb-6`}>
+              <View style={tw`w-14 h-14 rounded-full bg-[#3B82F6]/15 items-center justify-center mb-3`}>
+                <Feather name="trending-up" size={26} color="#3B82F6" />
               </View>
-              
-              <Text style={tw`text-[10px] text-gray-500 uppercase font-bold mb-1`}>Total Invested</Text>
-              <Text style={tw`text-[#3B82F6] font-bold text-lg mb-4`}>
-                {formatCurrency(allocatedSavings)}
-              </Text>
-
-              <Text style={tw`text-[10px] text-gray-500 uppercase font-bold mb-1`}>Passive Yield</Text>
-              <Text style={tw`${textPrimary} font-bold text-sm mb-4`}>
-                {(selectedYield * 100).toFixed(0)}% return rate
-              </Text>
-
-              <Text style={tw`text-gray-500 text-[10px] leading-3 mb-4`}>
+              <Text style={tw`${textPrimary} font-extrabold text-2xl tracking-wide`}>Time Freedom</Text>
+              <Text style={tw`text-gray-500 text-xs text-center mt-2 px-4 leading-5`}>
                 Allocated to wealth-generating assets to buy back control of your day.
               </Text>
             </View>
+            
+            {/* Investment Info */}
+            <View style={tw`w-full flex-row justify-between items-center mb-6 bg-[#3B82F6]/5 p-5 rounded-2xl border border-[#3B82F6]/10`}>
+              <View style={tw`items-center flex-1`}>
+                <Text style={tw`text-xs text-gray-500 uppercase font-bold tracking-widest mb-1.5`}>Total Invested</Text>
+                <Text style={tw`text-[#3B82F6] font-black text-3xl`}>
+                  {formatCurrency(allocatedSavings)}
+                </Text>
+              </View>
+              <View style={tw`h-10 w-px bg-[#3B82F6]/20 mx-2`} />
+              <View style={tw`items-center flex-1`}>
+                <Text style={tw`text-xs text-gray-500 uppercase font-bold tracking-widest mb-1.5`}>Passive Yield</Text>
+                <Text style={tw`${textPrimary} font-bold text-2xl`}>
+                  {(selectedYield * 100).toFixed(0)}% <Text style={tw`text-sm font-medium text-gray-500`}>APY</Text>
+                </Text>
+              </View>
+            </View>
 
-            <View style={tw`pt-3 border-t border-dashed ${isDark ? 'border-gray-800' : 'border-gray-200'}`}>
-              <Text style={tw`text-gray-500 text-[10px] uppercase font-bold mb-0.5`}>Monthly Cashflow</Text>
-              <Text style={tw`text-[#10B981] font-bold text-base`}>
+            {/* Cashflow Result */}
+            <View style={tw`w-full items-center pt-5 border-t border-dashed ${isDark ? 'border-gray-800' : 'border-gray-200'}`}>
+              <Text style={tw`text-gray-400 text-xs uppercase font-extrabold tracking-widest mb-2`}>Monthly Cashflow Generator</Text>
+              <Text style={tw`text-[#10B981] font-black text-4xl mb-2`}>
                 +{formatCurrency(passiveMonthlyIncome)}
               </Text>
-              <Text style={tw`text-[9px] text-gray-500`}>
-                +{formatCurrency(passiveMonthlyIncome * 12)}/year
-              </Text>
+              <View style={tw`bg-[#10B981]/15 px-3 py-1 rounded-full`}>
+                <Text style={tw`text-[#10B981] text-[10px] font-bold uppercase tracking-wider`}>
+                  +{formatCurrency(passiveMonthlyIncome * 12)} / year
+                </Text>
+              </View>
             </View>
           </View>
 
